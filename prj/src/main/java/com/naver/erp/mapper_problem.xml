@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.erp.ProblemDAO">
+
+	<select id="examTitleCheck" parameterType="com.naver.erp.ExamDTO" resultType="int">
+		select count(*) from exam_table where EXAM_TITLE=#{exam_title} and exam_code!=#{exam_code}
+	</select>
+
+	<select id="examCodeCheck" parameterType="String" resultType="int">
+		select count(*) from exam_table where EXAM_CODE=#{exam_code}
+	</select>
+	<select id="examMidCheck" parameterType="com.naver.erp.ExamDTO" resultType="int">
+		select count(*) from solv_table where EXAM_CODE=#{exam_code} and mid=#{mid}
+	</select>	
+	<select id="examIs_last_saveCheck" parameterType="com.naver.erp.ExamDTO" resultType="String">
+		select is_last_save from exam_table where EXAM_CODE=#{exam_code}
+	</select>
+
+<select id="search" parameterType="com.naver.erp.SearchDTO" resultType="java.util.HashMap">
+	select * from ( select  rownum RNUM, zxcvb.* from  (
+    select
+		EXAM_TITLE as "EXAM_TITLE",
+    	EXAM_CODE as "EXAM_CODE",
+		IS_LAST_SAVE as "IS_LAST_SAVE",
+		MID as "MID"
+    from exam_table where 1=1 and mid=#{mid}
+    <if test="keyword!=null and keyword.length()>0">
+        and upper(EXAM_TITLE) like upper('%${keyword}%')
+    </if>
+    
+	<![CDATA[
+		) zxcvb) where  RNUM  >= ${begin_rowNo}  and RNUM <= ${end_rowNo} order by exam_title asc
+	]]>
+</select>
+
+
+
+<insert id="insertExam_table" parameterType="com.naver.erp.ExamDTO">
+    insert into exam_table(
+        EXAM_CODE,
+        EXAM_TITLE,
+        IS_LAST_SAVE,
+        MID
+    )
+    select
+		#{exam_code},
+		#{exam_title},
+		#{is_last_save},
+		#{mid}
+	from dual
+</insert>
+
+<insert id="insertProblem_table" parameterType="com.naver.erp.ExamDTO">
+	insert into
+		problem_table (EXAM_CODE, PROBLEM_CONTENT, PROBLEM_ANSWER, PROBLEM_NO,MID)
+		<foreach item="tmp1" collection="problem_content" index="indexA" separator=" UNION ALL ">
+			<foreach item="tmp2" collection="problem_answer" index="indexB">
+				<if test="indexA == indexB">
+					select
+						#{exam_code},
+						#{tmp1},
+						#{tmp2},
+						${indexA}+1,
+						#{mid}
+					from dual
+				</if>
+			</foreach>
+      	</foreach>
+</insert>	
+
+<insert id="insertFile_table" parameterType="com.naver.erp.ExamDTO">
+    <if test="file_name != null and file_name.size() > 0">
+        insert into file_table (
+            exam_code,
+            file_name
+        ) 
+        select
+            #{exam_code},
+            file_name
+        from (
+            select distinct file_name from (
+                <foreach item="file_name" collection="file_name" separator=" UNION ALL ">
+                    select #{file_name} as file_name from dual
+                </foreach>
+            )
+        )
+    </if>
+</insert>
+
+<insert id="insertSolv" parameterType="com.naver.erp.ExamDTO">
+    insert into solv_table(
+        EXAM_CODE,
+        PROBLEM_ANSWER,
+        PROBLEM_NO,
+        NICKNAME,
+        MID
+    )
+    <foreach item="tmp1" collection="problem_answer" index="index" separator=" UNION ALL ">
+	    select
+			#{exam_code},
+        	#{tmp1},
+			${index}+1,
+			#{nickname},
+			#{mid}
+		from dual
+	</foreach>
+</insert>
+
+<select id="nicknameCheck" parameterType="com.naver.erp.SearchDTO" resultType="int">
+	select count(*) from solv_table where exam_code=#{exam_code} and NICKNAME=#{nickname}
+</select>
+
+<select id="problemAllCount" parameterType="com.naver.erp.SearchDTO" resultType="int">
+	select count(*) from ( select distinct EXAM_TITLE "EXAM_TITLE" from exam_table where mid=#{mid} )
+</select>
+
+<select id="searchResultCount" 	parameterType="com.naver.erp.SearchDTO" resultType="int">
+	select count(*) from
+		( select distinct EXAM_TITLE "EXAM_TITLE" from exam_table where 1=1 and mid=#{mid}
+	<if test="keyword!=null and keyword.length()>0">
+		 and upper(EXAM_TITLE) like upper('%${keyword}%')
+	</if>
+			)
+</select>
+
+<select id="getProblem" parameterType="String" resultType="java.util.HashMap">
+    select
+		distinct pt.PROBLEM_NO as "PROBLEM_NO",
+		et.EXAM_TITLE as "EXAM_TITLE",
+    	et.EXAM_CODE as "EXAM_CODE",
+		pt.PROBLEM_CONTENT as "PROBLEM_CONTENT",
+		pt.PROBLEM_ANSWER as "PROBLEM_ANSWER",
+		et.IS_LAST_SAVE as "IS_LAST_SAVE"
+    from
+    	exam_table et , problem_table pt
+    where
+    	et.exam_code=#{exam_code} and et.exam_code=pt.exam_code
+    order by
+    	problem_no asc
+</select>
+
+<select id="getCheck" parameterType="com.naver.erp.CheckDTO" resultType="java.util.HashMap">
+	select
+		distinct st.problem_no as "PROBLEM_NO",
+		st.nickname as "NICKNAME",
+		pt.problem_content as "PROBLEM_CONTENT",
+		st.problem_answer as "PROBLEM_ANSWER",
+		pt.problem_answer as "PT_PROBLEM_ANSWER",
+		et.exam_code as "EXAM_CODE"
+	from
+		solv_table st,
+		problem_table pt,
+		exam_table et
+	where
+		#{exam_code}=et.exam_code						and
+		pt.exam_code=st.exam_code						and
+		st.exam_code=et.exam_code						and
+		pt.problem_no=st.problem_no
+		<if test="problem_no_search!=0">
+		and
+		pt.problem_no=to_number(#{problem_no_search})
+		</if>
+		<if test="problem_no_search==0">
+		and
+		pt.problem_no=1
+		</if>
+	order by
+		nickname asc,
+		problem_no asc
+</select>
+
+<select id="getTitle" parameterType="com.naver.erp.CheckDTO" resultType="String">
+	select exam_title from exam_table where exam_code=#{exam_code}
+</select>
+
+<select id="getProblemMax" parameterType="com.naver.erp.CheckDTO" resultType="Integer">
+	select max(problem_no) from problem_table where exam_code=#{exam_code}
+</select>
+
+<select id="getExamineeCount" parameterType="com.naver.erp.CheckDTO" resultType="Integer">
+	select count(distinct NICKNAME) from solv_table where exam_code=#{exam_code}
+</select>
+<select id="getFile_name" parameterType="String" resultType="java.util.HashMap">
+	select file_name as "FILE_NAME" from file_table where exam_code=#{exam_code}
+</select>
+<update id="updateExam" parameterType="com.naver.erp.ExamDTO">
+	update EXAM_TABLE set exam_title=#{exam_title}, is_last_save=#{is_last_save} where exam_code=#{exam_code}
+</update>
+<delete id="deleteFile" parameterType="String">
+	delete from file_table where EXAM_CODE=#{exam_code}
+</delete>
+<delete id="deleteProblem" parameterType="String">
+	delete from problem_table where EXAM_CODE=#{exam_code}
+</delete>
+<delete id="deleteSolv" parameterType="String">
+	delete from solv_table where EXAM_CODE=#{exam_code}
+</delete>
+<delete id="deleteExam" parameterType="String">
+	delete from exam_table where EXAM_CODE=#{exam_code}
+</delete>
+
+</mapper>

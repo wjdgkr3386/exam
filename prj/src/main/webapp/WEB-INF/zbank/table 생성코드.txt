@@ -1,0 +1,35 @@
+CREATE TABLE exam_table (
+    exam_code VARCHAR2(50) primary key,
+    exam_title VARCHAR2(500) not null,
+    is_last_save VARCHAR2(30) not null,
+    mid varchar2(30) not null
+);
+
+CREATE TABLE problem_table (
+    exam_code VARCHAR2(50),
+    problem_content VARCHAR2(4000) not null,
+    problem_answer VARCHAR2(4000) not null,
+    problem_no number(10) not null,
+    mid varchar2(30) not null,
+    foreign key(exam_code) references exam_table(exam_code)
+);
+
+CREATE TABLE solv_table (
+    nickname VARCHAR2(100) not null,
+    exam_code VARCHAR2(50),
+    problem_answer VARCHAR2(4000),
+    problem_no number(10) not null,
+    mid varchar2(30) not null,
+    foreign key(exam_code) references exam_table(exam_code)
+);
+
+CREATE TABLE member (
+    mid varchar2(30) not null,
+    pwd varchar2(30) not null
+);
+
+CREATE TABLE file_table(
+    exam_code varchar2(50),
+    file_name varchar2(4000)    null,
+    foreign key(exam_code) references exam_table(exam_code)
+);
