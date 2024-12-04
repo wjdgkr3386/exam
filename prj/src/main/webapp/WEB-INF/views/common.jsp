@@ -7,6 +7,3 @@
 <script src="/js/common.js?<%=Math.random()%>"></script>
 <link href="/css/style.css?<%=Math.random()%>" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-
