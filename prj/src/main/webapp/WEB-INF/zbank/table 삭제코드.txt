@@ -1,0 +1,5 @@
+drop table file_table; 
+drop table member; 
+drop table solv_table; 
+drop table problem_table; 
+drop table exam_table; 
