@@ -1,0 +1,52 @@
+table{
+	border : solid 1px;
+	border-collapse:collapse;
+}
+textarea{
+  font-size: 1.1em;
+  padding: 10px;
+  line-height: 20px;
+}
+td{
+	border : solid 1px;
+	height : 100px;
+	text-align : center;
+}
+th{
+	border : solid 1px;
+	height : 50px;
+	text-align : center;
+}
+body {
+    margin-bottom: 200px;
+}
+.file_div {
+    padding: 10px;
+    width: 300px;
+}
+.mainTable{
+	width : 1500px;
+	height : 100px;
+}
+.problem_no{
+	width : 200px;	
+}
+.resultStatus{
+	width : 100px;	
+}
+.problem_content{
+	width : 900px;
+  	padding: 30px;
+}
+.problem_answer{
+	width : 400px;
+}
+.addDel{
+	width : 200px;
+}
+.nickname{
+	width: 120px;
+}
+.check{
+	width:1080px;
+}
