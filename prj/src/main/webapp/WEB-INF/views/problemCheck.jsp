@@ -52,7 +52,7 @@ function checkSearch(){
 
 <br><br>
 <table class="mainTable">
-	<tr>
+	<tr style="background-color: lightgray;">
 		<th class="problem_no">문제 번호</td>
 		<th class="problem_content">문제 내용</td>
 		<th class="problem_answer">문제 정답</td>
@@ -67,7 +67,7 @@ function checkSearch(){
 </table>
 <br><br><br><br><br>
 <table class="subTable">
-	<tr>
+	<tr style="background-color: lightgray;">
 		<th class="nickname">닉네임</td>
 		<th class="check">문제풀이</td>
 	</tr>
