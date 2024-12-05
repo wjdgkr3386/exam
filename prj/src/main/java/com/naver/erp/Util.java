@@ -217,4 +217,71 @@ public class Util {
 		return 1;
 	}
 	
+	//맵을 받아서 안에 있는 내용 중에 < , > , <br> 을 html에서 사용할 수 있게 변환하여 저장하고 반환
+    public static Map<String, Object> convertAngleBracketsMap(Map<String, Object> convertMap, String keyword){
+        if(keyword.equals("<br>")) {
+            for (Map.Entry<String, Object> entry : convertMap.entrySet()) {
+                Object value = entry.getValue();
+                if (value != null) {
+                    String sanitizedValue = value.toString()
+                        .replaceAll("<", "&lt;")
+                        .replaceAll(">", "&gt;")
+                        .replaceAll("\n", "<br>");
+                    entry.setValue(sanitizedValue);
+                }
+            }
+        }else if(keyword.equals("\n")) {
+            for (Map.Entry<String, Object> entry : convertMap.entrySet()) {
+                Object value = entry.getValue();
+                if (value != null) {
+                    String sanitizedValue = value.toString()
+                        .replaceAll("<", "&lt;")
+                        .replaceAll(">", "&gt;")
+                        .replaceAll("<br>", "\n");
+                    entry.setValue(sanitizedValue);
+                }
+            }
+        }
+        return convertMap;
+    }
+
+  //맵리스트을 받아서 안에 있는 내용 중에 < , > , <br> 을 html에서 사용할 수 있게 변환하여 저장하고 반환
+    public static List<Map<String, Object>> convertAngleBracketsMapList(List<Map<String, Object>> convertMapList, String keyword){
+        if(keyword.equals("<br>")) {
+            for(Map<String, Object> map : convertMapList) {
+                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                    Object value = entry.getValue();
+                    if (value != null) {
+                        String sanitizedValue = value.toString()
+                            .replaceAll("<", "&lt;")
+                            .replaceAll(">", "&gt;")
+                            .replaceAll("\n", "<br>");
+                        entry.setValue(sanitizedValue);
+                    }
+                }
+            }
+        }else if(keyword.equals("\n")) {
+            for(Map<String, Object> map : convertMapList) {
+                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                    Object value = entry.getValue();
+                    if (value != null) {
+                        String sanitizedValue = value.toString()
+                            .replaceAll("<", "&lt;")
+                            .replaceAll(">", "&gt;")
+                            .replaceAll("<br>", "\n");
+                        entry.setValue(sanitizedValue);
+                    }
+                }
+            }
+        }
+        return convertMapList;
+    }
+    
+    //String을 받아서 안에 있는 내용 중에 < , >을 html에서 사용할 수 있게 변환하여 저장하고 반환
+    public static String convertAngleBracketsString(String convertString){
+        convertString = convertString
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;");
+        return convertString;
+    }
 }

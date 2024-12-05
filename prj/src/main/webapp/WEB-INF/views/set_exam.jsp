@@ -67,11 +67,6 @@
     		alert("제목을 입력해주세요.");
     		return;
     	}
-    	var pattern = new RegExp( /^[^<]*$/ );
-    	if (!pattern.test(title.val())) {
-            alert("제목에 < 는 들어갈 수 없습니다.");
-            return;
-        }
     	var formObj = $("[name='examInputForm']");
         if (isEmpty()===true) {
             alert("값이 비어있는 문제가 있습니다.");

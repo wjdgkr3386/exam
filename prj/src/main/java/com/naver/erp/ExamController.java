@@ -50,21 +50,10 @@ public class ExamController {
 		ExamDTO examDTO,
 		HttpSession session
 	){
+		Map<String,Object> problemMap = new HashMap<String,Object>();
 		String mid = (String) session.getAttribute("mid");
 		examDTO.setMid(mid);
 		
-		List<String> contList = new ArrayList<>();
-		List<String> answList = new ArrayList<>();
-		for(int i=0; i<examDTO.getProblem_content().size(); i++) {
-			contList.add(examDTO.getProblem_content().get(i).replaceAll("\n", "<br>"));
-		}
-		for(int i=0; i<examDTO.getProblem_answer().size(); i++) {
-			answList.add(examDTO.getProblem_answer().get(i).replaceAll("\n", "<br>"));
-		}
-		examDTO.setProblem_content(contList);
-		examDTO.setProblem_answer(answList);
-		
-		Map<String,Object> problemMap = new HashMap<String,Object>();
 		int problemCnt=0;
 		try {
 			problemCnt = problemService.insertExam(examDTO);
@@ -123,13 +112,14 @@ public class ExamController {
 		}
 
 		List<Map<String,Object>> checkList = problemDAO.getCheck(checkDTO);
+		checkList = Util.convertAngleBracketsMapList(checkList, "<br>");
 		String exam_title = problemDAO.getTitle(checkDTO);
+		exam_title = Util.convertAngleBracketsString(exam_title);
 		
 		//문제의 갯수 구하는 코드
 		int problemMax = problemDAO.getProblemMax(checkDTO);
 		//응시자의 수
 		int examineeCount  = problemDAO.getExamineeCount(checkDTO);
-
 		mav.addObject(   "checkList" , checkList     );
 		mav.addObject(   "exam_title" , exam_title     );
 		mav.addObject(   "problemMax" , problemMax     );
@@ -152,7 +142,8 @@ public class ExamController {
 		// 여기서부터 행개수가 기본 10개가 된다. 그래서 순서를 잘 줘야함.
 
 		List<Map<String,Object>> examList = this.problemDAO.search(searchDTO);
-
+		examList = Util.convertAngleBracketsMapList(examList, "<br>");
+		
 		resultMap.put(	"examList"						, examList);														//검색결과물
 		resultMap.put(	"problemAllCount"		, problemAllCount);												//db에 저장된 모든행의 개수
 		resultMap.put(	"searchResultCount"		, pagingMap.get("searchResultCount"));		//검색결과물의 개수
@@ -171,10 +162,10 @@ public class ExamController {
 		return resultMap;
 	}
 	//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+	@ResponseBody
 	@RequestMapping(
 	         value="/updel_exam.do"
 	   )
-	@ResponseBody
 	public ModelAndView updel_exam(
 			String exam_code,
 			HttpSession session
@@ -193,11 +184,14 @@ public class ExamController {
 		for (int i = 0; i < listMap.size(); i++) {
 		    Map<String,Object> copyList = new HashMap<>();
 		    copyList = listMap.get(i);
+		    String titleStr = (String) copyList.get("EXAM_TITLE");
 		    String contStr = (String) copyList.get("PROBLEM_CONTENT");
 		    String answStr = (String) copyList.get("PROBLEM_ANSWER");
-		    if (contStr != null && answStr != null) {
-		        contStr = contStr.replaceAll("<br>", "");
-		        answStr = answStr.replaceAll("<br>", "");
+		    if (titleStr != null && contStr != null && answStr != null) {
+		    	titleStr = Util.convertAngleBracketsString(titleStr);
+		        contStr = Util.convertAngleBracketsString(contStr);
+		        answStr = Util.convertAngleBracketsString(answStr);
+		        copyList.put("PROBLEM_TITLE", titleStr);
 		        copyList.put("PROBLEM_CONTENT", contStr);
 		        copyList.put("PROBLEM_ANSWER", answStr);
 		    }
@@ -293,6 +287,7 @@ public class ExamController {
 		}
 		
 		List<Map<String,Object>> examList = problemDAO.getProblem(exam_code);
+		examList = Util.convertAngleBracketsMapList(examList, "<br>");
 		List<Map<String,String>> file_nameList = problemDAO.getFile_name(exam_code);
 
 		mav.addObject("examList" , examList);

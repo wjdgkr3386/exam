@@ -91,11 +91,6 @@ function update(){
 		alert("제목을 입력해주세요.");
 		return;
 	}
-	var pattern = new RegExp( /^[^<]*$/ );
-	if (!pattern.test(title.val())) {
-        alert("제목에 < 는 들어갈 수 없습니다.");
-        return;
-    }
     if (isEmpty()===true) {
         alert("제목, 문제, 정답 중에 값이 비어있는 곳이 있습니다.");
         return;
