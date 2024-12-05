@@ -224,9 +224,10 @@ public class Util {
                 Object value = entry.getValue();
                 if (value != null) {
                     String sanitizedValue = value.toString()
-                        .replaceAll("<", "&lt;")
-                        .replaceAll(">", "&gt;")
-                        .replaceAll("\n", "<br>");
+                        	.replaceAll(" ", "&nbsp;")
+                            .replaceAll("<", "&lt;")
+                            .replaceAll(">", "&gt;");
+                    sanitizedValue = sanitizedValue.replaceAll("\n", "<br>");
                     entry.setValue(sanitizedValue);
                 }
             }
@@ -236,8 +237,7 @@ public class Util {
                 if (value != null) {
                     String sanitizedValue = value.toString()
                         .replaceAll("<", "&lt;")
-                        .replaceAll(">", "&gt;")
-                        .replaceAll("<br>", "\n");
+                        .replaceAll(">", "&gt;");
                     entry.setValue(sanitizedValue);
                 }
             }
@@ -253,9 +253,10 @@ public class Util {
                     Object value = entry.getValue();
                     if (value != null) {
                         String sanitizedValue = value.toString()
+                            .replaceAll(" ", "&nbsp;")
                             .replaceAll("<", "&lt;")
-                            .replaceAll(">", "&gt;")
-                            .replaceAll("\n", "<br>");
+                            .replaceAll(">", "&gt;");
+                        sanitizedValue = sanitizedValue.replaceAll("\n", "<br>");
                         entry.setValue(sanitizedValue);
                     }
                 }
@@ -267,8 +268,7 @@ public class Util {
                     if (value != null) {
                         String sanitizedValue = value.toString()
                             .replaceAll("<", "&lt;")
-                            .replaceAll(">", "&gt;")
-                            .replaceAll("<br>", "\n");
+                            .replaceAll(">", "&gt;");
                         entry.setValue(sanitizedValue);
                     }
                 }
@@ -280,6 +280,7 @@ public class Util {
     //String을 받아서 안에 있는 내용 중에 < , >을 html에서 사용할 수 있게 변환하여 저장하고 반환
     public static String convertAngleBracketsString(String convertString){
         convertString = convertString
+            	.replaceAll(" ", "&nbsp;")
                 .replaceAll("<", "&lt;")
                 .replaceAll(">", "&gt;");
         return convertString;

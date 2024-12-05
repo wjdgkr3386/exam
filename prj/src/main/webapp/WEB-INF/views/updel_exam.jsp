@@ -215,9 +215,9 @@ function checkExam(){
 <br><br>
 <table class="mainTable">
 	<tr style="background-color : lightgray;" class="headerTr">
-		<td class="problem_no">번호</td>
-		<td class="problem_content">문제</td>
-		<td class="problem_answer">정답</td>
+		<th class="problem_no">번호</td>
+		<th class="problem_content">문제</td>
+		<th class="problem_answer">정답</td>
 		<c:if test="${requestScope.examList[0].IS_LAST_SAVE ne '최종'}">
 		<td class="addDel">추가/삭제</td>
 		</c:if>

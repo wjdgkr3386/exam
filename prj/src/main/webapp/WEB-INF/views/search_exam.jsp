@@ -70,7 +70,7 @@
             <thead>
                 <tr style="background-color: lightgray;">
                     <th class='problem_no'>번호</th>
-                    <th class='problem_content'>제목</th>
+                    <th class='problem_title'>제목</th>
                     <th class='updelBtn'>수정/삭제/채점</th>
                     <th class='resultStatus'>완성도</th>
                 </tr>
@@ -78,9 +78,9 @@
             <tbody>
                 <c:forEach var="i" items="${requestScope.examMap.examList}" varStatus="vs">
                     <tr>
-                        <td>${vs.index + 1}</td>
-                        <td>${i.EXAM_TITLE}</td>
-                        <td width='120px'>
+                        <td class="problem_no">${vs.index + 1}</td>
+                        <td class="problem_title">${i.EXAM_TITLE}</td>
+                        <td width="120px" style="text-align: center; vertical-align: middle;">
                             <c:choose>
                                 <c:when test="${i.IS_LAST_SAVE eq '미완성'}">
                                     <input type="button" value="수정/삭제" onclick="goExamUpdelForm('${i.EXAM_CODE}')">
@@ -90,12 +90,12 @@
                                 </c:when>
                             </c:choose>
                         </td>
-                        <td>${i.IS_LAST_SAVE}</td>
+                        <td style="text-align: center;">${i.IS_LAST_SAVE}</td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
-
+		<br>
         <div class="pageNos">
             <span style="cursor:pointer" onClick="pageNoClick(1)">[처음]</span>
             <span style="cursor:pointer" onClick="pageNoClick(${requestScope.examMap.selectPageNo}-1)">[이전]</span>&nbsp;&nbsp;

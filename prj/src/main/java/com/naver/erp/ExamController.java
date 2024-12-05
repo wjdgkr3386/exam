@@ -222,20 +222,7 @@ public class ExamController {
 		Map<String,Object> problemMap = new HashMap<String,Object>();
 		int updateCnt=0;
 		try {
-			
-			List<String> contList = new ArrayList<>();
-			List<String> answList = new ArrayList<>();
-			for(int i=0; i<examDTO.getProblem_content().size(); i++) {
-				contList.add(examDTO.getProblem_content().get(i).replaceAll("\n", "<br>"));
-			}
-			for(int i=0; i<examDTO.getProblem_answer().size(); i++) {
-				answList.add(examDTO.getProblem_answer().get(i).replaceAll("\n", "<br>"));
-			}
-			examDTO.setProblem_content(contList);
-			examDTO.setProblem_answer(answList);
-			
 			updateCnt = problemService.updateProblem(examDTO);
-			
 		}catch(Exception e) {
 	        System.out.println("Exception occurred at: " + e.getStackTrace()[0]);
 	        e.printStackTrace();

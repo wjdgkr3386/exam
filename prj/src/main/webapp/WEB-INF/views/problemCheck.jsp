@@ -53,29 +53,29 @@ function checkSearch(){
 <br><br>
 <table class="mainTable">
 	<tr>
-		<td class="problem_no">문제 번호</td>
-		<td class="problem_content">문제 내용</td>
-		<td class="problem_answer">문제 정답</td>
+		<th class="problem_no">문제 번호</td>
+		<th class="problem_content">문제 내용</td>
+		<th class="problem_answer">문제 정답</td>
 	</tr>
 	<c:forEach var="i" items="${requestScope.checkList}" varStatus="vs" end="0">
 	<tr>
-		<td>${i.PROBLEM_NO}</td>
-		<td>${i.PROBLEM_CONTENT}</td>
-		<td>${i.PT_PROBLEM_ANSWER}</td>
+		<td class="problem_no">${i.PROBLEM_NO}</td>
+		<td class="problem_content">${i.PROBLEM_CONTENT}</td>
+		<td class="problem_answer">${i.PT_PROBLEM_ANSWER}</td>
 	</tr>
 	</c:forEach>
 </table>
 <br><br><br><br><br>
 <table class="subTable">
 	<tr>
-		<td class="nickname">아이디</td>
-		<td class="check">문제풀이</td>
+		<th class="nickname">닉네임</td>
+		<th class="check">문제풀이</td>
 	</tr>
 	<c:if test="${requestScope.examineeCount ne 0}">
 		<c:forEach var="i" items="${requestScope.checkList}" varStatus="vs" end="${requestScope.examineeCount-1}">
 			<tr>
-				<td>${i.NICKNAME}</td>
-				<td>${i.PROBLEM_ANSWER}</td>
+				<td class="nickname">${i.NICKNAME}</td>
+				<td class="problem_answer">${i.PROBLEM_ANSWER}</td>
 			</tr>
 		</c:forEach>
 	</c:if>

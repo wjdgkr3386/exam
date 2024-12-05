@@ -90,9 +90,9 @@ function examSubmit(){
 <br><br>
 <table class="mainTable">
 	<tr style="background-color : lightgray;" class="headerTr">
-		<td class="problem_no">번호</td>
-		<td class="problem_content">문제</td>
-		<td class="problem_answer">답안지</td>
+		<th class="problem_no">번호</td>
+		<th class="problem_content">문제</td>
+		<th class="problem_answer">답안지</td>
 	</tr>
 	<c:forEach var="i" items="${requestScope.examList}" varStatus="vs">
 		<tr>
