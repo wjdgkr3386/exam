@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CheckDTO {
 
-	private String exam_code;
+	private String exam_code; 
 	private String exam_title;
 	
 	private List<String> id;
@@ -14,11 +14,6 @@ public class CheckDTO {
 	
 	private int problem_no_search;	//문제 번호 검색
 
-	
-	
-	
-	
-	
 	public String getExam_code() {
 		return exam_code;
 	}

@@ -16,7 +16,7 @@ function init(){}
 function checkSearch(){
 	var examineeCount = ${requestScope.examineeCount};
 	if(examineeCount==0) { return; }
-	
+	 
 	var formObj = $("[name='checkForm']");
 	
     ajax(

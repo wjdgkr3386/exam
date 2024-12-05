@@ -90,7 +90,7 @@ function update(){
 	if(title.val()==="") { 
 		alert("제목을 입력해주세요.");
 		return;
-	}
+	} 
     if (isEmpty()===true) {
         alert("제목, 문제, 정답 중에 값이 비어있는 곳이 있습니다.");
         return;

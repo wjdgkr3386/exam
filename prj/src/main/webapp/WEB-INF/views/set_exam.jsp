@@ -66,7 +66,7 @@
     	if(title.val()==="") { 
     		alert("제목을 입력해주세요.");
     		return;
-    	}
+    	} 
     	var formObj = $("[name='examInputForm']");
         if (isEmpty()===true) {
             alert("값이 비어있는 문제가 있습니다.");

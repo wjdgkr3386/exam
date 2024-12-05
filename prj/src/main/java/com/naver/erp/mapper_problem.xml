@@ -139,7 +139,7 @@
     order by
     	problem_no asc
 </select>
-
+ 
 <select id="getCheck" parameterType="com.naver.erp.CheckDTO" resultType="java.util.HashMap">
 	select
 		distinct st.problem_no as "PROBLEM_NO",
